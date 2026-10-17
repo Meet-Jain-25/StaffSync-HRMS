@@ -1,0 +1,96 @@
+import { useNavigate } from "react-router-dom";
+
+function EmployeeDashboard() {
+  const navigate = useNavigate();
+
+  const user = JSON.parse(
+    localStorage.getItem("staffsync_user") || "{}"
+  );
+
+  const handleLogout = () => {
+    localStorage.removeItem("staffsync_token");
+    localStorage.removeItem("staffsync_user");
+    navigate("/login", { replace: true });
+  };
+
+  return (
+    <div className="container py-5">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 className="fw-bold">Employee Dashboard</h1>
+          <p className="text-secondary mb-0">
+            Welcome back, {user.name || "Employee"}!
+          </p>
+        </div>
+
+        <button className="btn btn-outline-danger" onClick={handleLogout}>
+          <i className="bi bi-box-arrow-right me-2"></i>
+          Logout
+        </button>
+      </div>
+
+      <div className="alert alert-primary">
+        <i className="bi bi-person-check me-2"></i>
+        You are successfully logged in to StaffSync.
+      </div>
+
+      <div className="row g-4 mt-2">
+        <div className="col-md-4">
+          <div className="card h-100 shadow-sm border-0">
+            <div className="card-body p-4">
+              <i className="bi bi-calendar-check fs-2 text-primary"></i>
+              <h5 className="mt-3">Attendance</h5>
+              <p className="text-secondary">
+                Your attendance and check-in history.
+              </p>
+              <span className="badge text-bg-secondary">Coming soon</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-4">
+          <div className="card h-100 shadow-sm border-0">
+            <div className="card-body p-4">
+              <i className="bi bi-calendar2-week fs-2 text-success"></i>
+              <h5 className="mt-3">Leave Management</h5>
+              <p className="text-secondary">
+                Apply for leave and track your applications.
+              </p>
+              <span className="badge text-bg-secondary">Coming soon</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-4">
+          <div className="card h-100 shadow-sm border-0">
+            <div className="card-body p-4">
+              <i className="bi bi-megaphone fs-2 text-warning"></i>
+              <h5 className="mt-3">Announcements</h5>
+              <p className="text-secondary">
+                Stay updated with company announcements.
+              </p>
+              <span className="badge text-bg-secondary">Coming soon</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="card border-0 shadow-sm mt-4">
+        <div className="card-body p-4">
+          <h5>My Account</h5>
+          <p className="mb-2">
+            <strong>Name:</strong> {user.name || "Not available"}
+          </p>
+          <p className="mb-2">
+            <strong>Email:</strong> {user.email || "Not available"}
+          </p>
+          <p className="mb-0">
+            <strong>Role:</strong> {user.role || "Employee"}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default EmployeeDashboard;
