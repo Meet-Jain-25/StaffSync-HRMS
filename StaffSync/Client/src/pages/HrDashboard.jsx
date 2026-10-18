@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import HRAttendance from "../components/hr/HRAttendance";
+import HRLeaveManagement from "../components/hr/HRLeaveManagement";
 
 const initialForm = {
   name: "",
@@ -26,6 +28,7 @@ const initialEditForm = {
 
 function HrDashboard() {
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState("dashboard");
 
   const [user] = useState(() => {
     try {
@@ -345,27 +348,45 @@ function HrDashboard() {
         <div className="hr-sidebar-section">WORKSPACE</div>
 
         <nav className="hr-navigation">
-          <a className="hr-nav-link active" href="#dashboard">
+          <button
+            type="button"
+            className={`hr-nav-link ${activeSection === "dashboard" ? "active" : ""}`}
+            onClick={() => setActiveSection("dashboard")}
+          >
             <i className="bi bi-grid-fill" /> Dashboard
-          </a>
-          <a
-            className="hr-nav-link"
-            href="#employees"
-            onClick={() =>
-              document.getElementById("employees")?.scrollIntoView()
-            }
+          </button>
+
+          <button
+            type="button"
+            className={`hr-nav-link ${activeSection === "employees" ? "active" : ""}`}
+            onClick={() => setActiveSection("employees")}
           >
             <i className="bi bi-people-fill" /> Employees
-          </a>
-          <a className="hr-nav-link" href="#attendance">
+          </button>
+
+          <button
+            type="button"
+            className={`hr-nav-link ${activeSection === "attendance" ? "active" : ""}`}
+            onClick={() => setActiveSection("attendance")}
+          >
             <i className="bi bi-calendar-check" /> Attendance
-          </a>
-          <a className="hr-nav-link" href="#leave">
+          </button>
+
+          <button
+            type="button"
+            className={`hr-nav-link ${activeSection === "leave" ? "active" : ""}`}
+            onClick={() => setActiveSection("leave")}
+          >
             <i className="bi bi-calendar2-week" /> Leave Management
-          </a>
-          <a className="hr-nav-link" href="#announcements">
-            <i className="bi bi-megaphone" /> Announcements
-          </a>
+          </button>
+
+          <button
+          type="button"
+          className={`hr-nav-link ${activeSection === "announcements" ? "active" : ""}`}
+          onClick={() => setActiveSection("announcements")}
+        >
+          <i className="bi bi-megaphone" /> Announcements
+          </button>
         </nav>
 
         <div className="hr-sidebar-bottom">
@@ -386,6 +407,46 @@ function HrDashboard() {
       </aside>
 
       <main className="hr-main" id="dashboard">
+  {activeSection === "attendance" ? (
+    <>
+      <header className="hr-topbar">
+        <div>
+          <small>Workspace / Attendance</small>
+          <h1>Attendance Management</h1>
+        </div>
+
+        <span className="hr-online">
+          <span /> System Online
+        </span>
+      </header>
+
+      <HRAttendance />
+
+            <footer className="hr-footer">
+        StaffSync — Modern Human Resource Management Solution
+      </footer>
+    </>
+  ) : activeSection === "leave" ? (
+    <>
+      <header className="hr-topbar">
+        <div>
+          <small>Workspace / Leave Management</small>
+          <h1>Leave Management</h1>
+        </div>
+
+        <span className="hr-online">
+          <span /> System Online
+        </span>
+      </header>
+
+      <HRLeaveManagement />
+
+      <footer className="hr-footer">
+        StaffSync — Modern Human Resource Management Solution
+      </footer>
+    </>
+  ) : (
+    <>
         <header className="hr-topbar">
           <div>
             <small>Workspace / Overview</small>
@@ -602,6 +663,8 @@ function HrDashboard() {
         <footer className="hr-footer">
           StaffSync — Modern Human Resource Management Solution
         </footer>
+      </>
+    )}
       </main>
 
       {showModal && (

@@ -90,6 +90,6 @@ const authorize = (...allowedRoles) => {
 };
 
 module.exports = {
-  protect,
+  protect, 
   authorize,
 };
