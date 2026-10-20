@@ -9,6 +9,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import HrDashboard from "./pages/HrDashboard";
+import ManagerDashboard from "./pages/ManagerDashboard";
 
 function getStoredUser() {
   try {
@@ -88,10 +89,7 @@ function App() {
           path="/manager-dashboard"
           element={
             <ProtectedRoute allowedRoles={["Manager"]}>
-              <div className="container py-5">
-                <h1>Manager Dashboard</h1>
-                <p>Welcome to StaffSync Manager Portal.</p>
-              </div>
+              <ManagerDashboard />
             </ProtectedRoute>
           }
         />
