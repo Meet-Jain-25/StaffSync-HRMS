@@ -10,52 +10,65 @@ function Register() {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "Employee",
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
-    setFormData({
-      ...formData,
+    setFormData((previousData) => ({
+      ...previousData,
       [event.target.name]: event.target.value,
-    });
+    }));
+
+    setError("");
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
 
-    if (formData.password.length < 8) {
+    const { name, email, password, confirmPassword, role } = formData;
+
+    if (password.length < 8) {
       setError("Password must contain at least 8 characters.");
       return;
     }
 
-    if (formData.password !== formData.confirmPassword) {
+    if (password !== confirmPassword) {
       setError("Passwords do not match.");
+      return;
+    }
+
+    // Privileged roles require an authorized invitation.
+    if (role !== "Employee") {
+      setError(
+        `${role} registration requires an authorized invitation. Please contact your system administrator.`
+      );
       return;
     }
 
     try {
       setLoading(true);
 
+      // Preserve the existing backend registration contract.
       const response = await api.post("/auth/register", {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
+        name: name.trim(),
+        email: email.trim(),
+        password,
       });
 
-      localStorage.setItem("staffsync_token", response.data.token);
-      localStorage.setItem(
-        "staffsync_user",
-        JSON.stringify(response.data.user)
-      );
+      const { token, user } = response.data;
+
+      localStorage.setItem("staffsync_token", token);
+      localStorage.setItem("staffsync_user", JSON.stringify(user));
 
       navigate("/dashboard");
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Registration failed. Please try again."
+          "Unable to create your account. Please try again."
       );
     } finally {
       setLoading(false);
@@ -68,17 +81,23 @@ function Register() {
         <div className="brand-mark">S</div>
 
         <h1>Create your account</h1>
+
         <p className="auth-subtitle">
-          Join StaffSync — Modern Human Resource Management Solution
+          Join StaffSync to manage your workplace activities
         </p>
 
-        {error && <div className="alert alert-danger">{error}</div>}
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               Full name
             </label>
+
             <input
               id="name"
               name="name"
@@ -87,9 +106,9 @@ function Register() {
               placeholder="Enter your full name"
               value={formData.name}
               onChange={handleChange}
+              autoComplete="name"
               minLength={2}
               maxLength={100}
-              autoComplete="name"
               required
             />
           </div>
@@ -98,6 +117,7 @@ function Register() {
             <label htmlFor="email" className="form-label">
               Email address
             </label>
+
             <input
               id="email"
               name="email"
@@ -112,19 +132,43 @@ function Register() {
           </div>
 
           <div className="mb-3">
+            <label htmlFor="role" className="form-label">
+              Register as
+            </label>
+
+            <select
+              id="role"
+              name="role"
+              className="form-control"
+              value={formData.role}
+              onChange={handleChange}
+              required
+            >
+              <option value="Employee">Employee</option>
+              <option value="HR">HR</option>
+              <option value="Manager">Manager</option>
+            </select>
+
+            <small className="auth-note d-block mt-2">
+              HR and Manager accounts require an authorized invitation.
+            </small>
+          </div>
+
+          <div className="mb-3">
             <label htmlFor="password" className="form-label">
               Password
             </label>
+
             <input
               id="password"
               name="password"
               type="password"
               className="form-control"
-              placeholder="At least 8 characters"
+              placeholder="Create a password"
               value={formData.password}
               onChange={handleChange}
-              minLength={8}
               autoComplete="new-password"
+              minLength={8}
               required
             />
           </div>
@@ -133,6 +177,7 @@ function Register() {
             <label htmlFor="confirmPassword" className="form-label">
               Confirm password
             </label>
+
             <input
               id="confirmPassword"
               name="confirmPassword"
@@ -157,10 +202,6 @@ function Register() {
 
         <p className="auth-footer">
           Already have an account? <Link to="/login">Sign in</Link>
-        </p>
-
-        <p className="auth-note">
-          Public registration creates an Employee account.
         </p>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import HRAttendance from "../components/hr/HRAttendance";
 import HRLeaveManagement from "../components/hr/HRLeaveManagement";
+import HRAnnouncements from "../components/hr/HRAnnouncements";
 
 const initialForm = {
   name: "",
@@ -407,7 +408,26 @@ function HrDashboard() {
       </aside>
 
       <main className="hr-main" id="dashboard">
-  {activeSection === "attendance" ? (
+        {activeSection === "announcements" ? (
+          <>
+            <header className="hr-topbar">
+              <div>
+                <small>Workspace / Announcements</small>
+                <h1>Announcements Management</h1>
+              </div>
+
+              <span className="hr-online">
+                <span /> System Online
+              </span>
+            </header>
+
+            <HRAnnouncements />
+
+            <footer className="hr-footer">
+              StaffSync — Modern Human Resource Management Solution
+            </footer>
+          </>
+        ) : activeSection === "attendance" ? (
     <>
       <header className="hr-topbar">
         <div>

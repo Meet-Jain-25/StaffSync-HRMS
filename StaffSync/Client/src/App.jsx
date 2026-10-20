@@ -10,6 +10,7 @@ import Register from "./components/auth/Register";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import HrDashboard from "./pages/HrDashboard";
 import ManagerDashboard from "./pages/ManagerDashboard";
+import LandingPage from "./pages/LandingPage";
 
 function getStoredUser() {
   try {
@@ -60,7 +61,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<LandingPage />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

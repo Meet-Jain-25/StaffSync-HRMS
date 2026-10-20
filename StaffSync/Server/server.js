@@ -11,6 +11,7 @@ const employeeRoutes = require("./routes/employeeRoutes");
 const attendanceRoutes = require("./routes/attendanceRoutes");
 const leaveRoutes = require("./routes/leaveRoutes");
 const trainingRoutes = require("./routes/trainingRoutes");
+const announcementRoutes = require("./routes/announcementRoutes");
 
 app.use(
   cors({
@@ -25,6 +26,7 @@ app.use("/api/employees", employeeRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/leave", leaveRoutes);
 app.use("/api/training", trainingRoutes);
+app.use("/api/announcements", announcementRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({

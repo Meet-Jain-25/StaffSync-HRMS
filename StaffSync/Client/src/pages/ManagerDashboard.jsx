@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import HRLeaveManagement from "../components/hr/HRLeaveManagement";
 import TrainingManagement from "../components/manager/TrainingManagement";
+import HRAnnouncements from "../components/hr/HRAnnouncements";
 
 function ManagerDashboard() {
   const navigate = useNavigate();
@@ -84,6 +85,20 @@ function ManagerDashboard() {
           <i className="bi bi-mortarboard me-2"></i>
           Training Management
         </button>
+
+        {/* Announcements Navigation */}
+        <button
+          type="button"
+          className={`btn ${
+            activeSection === "announcements"
+              ? "btn-primary"
+              : "btn-outline-primary"
+          }`}
+          onClick={() => setActiveSection("announcements")}
+        >
+          <i className="bi bi-megaphone me-2"></i>
+          Announcements
+        </button>
       </div>
 
       {/* Main Content */}
@@ -91,6 +106,8 @@ function ManagerDashboard() {
         <HRLeaveManagement />
       ) : activeSection === "training" ? (
         <TrainingManagement />
+      ) : activeSection === "announcements" ? (
+        <HRAnnouncements />
       ) : (
         <>
           <div className="alert alert-primary" role="status">

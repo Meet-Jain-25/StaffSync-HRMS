@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Attendance from "../components/employee/Attendance";
 import LeaveManagement from "../components/employee/LeaveManagement";
+import Announcements from "../components/employee/Announcements";
 
 function EmployeeDashboard() {
   const navigate = useNavigate();
@@ -67,7 +68,6 @@ function EmployeeDashboard() {
           My Attendance
         </button>
 
-        {/* Leave Management navigation button */}
         <button
           type="button"
           className={`btn ${
@@ -80,6 +80,20 @@ function EmployeeDashboard() {
           <i className="bi bi-calendar2-week me-2"></i>
           Leave Management
         </button>
+
+        {/* Announcements Navigation */}
+        <button
+          type="button"
+          className={`btn ${
+            activeSection === "announcements"
+              ? "btn-primary"
+              : "btn-outline-primary"
+          }`}
+          onClick={() => setActiveSection("announcements")}
+        >
+          <i className="bi bi-megaphone me-2"></i>
+          Announcements
+        </button>
       </div>
 
       {/* Main Content Sections */}
@@ -87,6 +101,8 @@ function EmployeeDashboard() {
         <Attendance />
       ) : activeSection === "leave" ? (
         <LeaveManagement />
+      ) : activeSection === "announcements" ? (
+        <Announcements />
       ) : (
         <>
           {/* Welcome Message */}
@@ -155,9 +171,14 @@ function EmployeeDashboard() {
                     Stay updated with company announcements.
                   </p>
 
-                  <span className="badge text-bg-secondary">
-                    Coming soon
-                  </span>
+                  <button
+                    type="button"
+                    className="btn btn-warning btn-sm"
+                    onClick={() => setActiveSection("announcements")}
+                  >
+                    <i className="bi bi-megaphone me-2"></i>
+                    View Announcements
+                  </button>
                 </div>
               </div>
             </div>
